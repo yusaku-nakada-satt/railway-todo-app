@@ -12,6 +12,11 @@
 			margin-bottom: 25px;
 		}
 
+		.new-list-date-picker {
+			width: 300px;
+			margin-bottom: 25px;
+		}
+
 		.new-list-button {
 			background-color: #242f9b;
 			color: #ffffff;
@@ -23,4 +28,8 @@
 			filter: brightness(90%);
 		}
 	}
+}
+
+.new-list-date-picker-open {
+	margin-bottom: 200px; /* 必要な値に調整してください */
 }

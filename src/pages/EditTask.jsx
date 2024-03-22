@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Header } from '../components/Header'
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import dayjs from 'dayjs';
 import axios from 'axios'
 import { useCookies } from 'react-cookie'
 import { url } from '../const'
@@ -11,11 +16,15 @@ export const EditTask = () => {
 	const { listId, taskId } = useParams()
 	const [cookies] = useCookies()
 	const [title, setTitle] = useState('')
+	const [limit, setLimit] = useState('')
 	const [detail, setDetail] = useState('')
 	const [isDone, setIsDone] = useState()
 	const [errorMessage, setErrorMessage] = useState('')
 	const handleTitleChange = (e) => setTitle(e.target.value)
 	const handleDetailChange = (e) => setDetail(e.target.value)
+	const handleLimitChange = (day) => {
+    const formattedLimit = dayjs(day).format('YYYY-MM-DDTHH:mm:ss') + 'Z';
+    setLimit(formattedLimit);};
 	const handleIsDoneChange = (e) => setIsDone(e.target.value === 'done')
 	const onUpdateTask = () => {
 		console.log(isDone)
@@ -23,6 +32,7 @@ export const EditTask = () => {
 			title: title,
 			detail: detail,
 			done: isDone,
+			limit: limit
 		}
 
 		axios
@@ -66,6 +76,7 @@ export const EditTask = () => {
 				const task = res.data
 				setTitle(task.title)
 				setDetail(task.detail)
+				setLimit(task.limit)
 				setIsDone(task.done)
 			})
 			.catch((err) => {
@@ -84,6 +95,17 @@ export const EditTask = () => {
 					<br />
 					<input type='text' onChange={handleTitleChange} className='edit-task-title' value={title} />
 					<br />
+					<label>期限</label>
+					<br />
+					<LocalizationProvider dateAdapter={AdapterDayjs}>
+						<DemoContainer components={['DateTimePicker']} className="new-list-date-picker">
+							<DateTimePicker
+								label={limit || "期限が設定されていません"}
+								onChange={handleLimitChange}
+								defaultDate={limit}
+							/>
+						</DemoContainer>
+					</LocalizationProvider>
 					<label>詳細</label>
 					<br />
 					<textarea type='text' onChange={handleDetailChange} className='edit-task-detail' value={detail} />

@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import dayjs from 'dayjs';
 import axios from "axios";
 import { url } from "../const";
 import { Header } from "../components/Header";
@@ -11,10 +16,15 @@ export const NewTask = () => {
   const [lists, setLists] = useState([]);
   const [title, setTitle] = useState("");
   const [detail, setDetail] = useState("");
+  // const [startDate, setStartDate] = useState < Dayjs | null > (null);
+  const [limit, setLimit] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [cookies] = useCookies();
   const history = useNavigate();
   const handleTitleChange = (e) => setTitle(e.target.value);
+  const handleLimitChange = (day) => {
+    const formattedLimit = dayjs(day).format('YYYY-MM-DDTHH:mm:ss') + 'Z';
+    setLimit(formattedLimit);};
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleSelectList = (id) => setSelectListId(id);
   const onCreateTask = () => {
@@ -22,6 +32,7 @@ export const NewTask = () => {
       title: title,
       detail: detail,
       done: false,
+      limit: limit,
     };
 
     axios
@@ -81,6 +92,16 @@ export const NewTask = () => {
             onChange={handleTitleChange}
             className="new-task-title"
           />
+          <br />
+          <label>期限</label>
+          <br />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DateTimePicker']} className="new-list-date-picker">
+              <DateTimePicker
+                label="タスクの期限を設定してください"
+                onChange={handleLimitChange}/>
+            </DemoContainer>
+          </LocalizationProvider>
           <br />
           <label>詳細</label>
           <br />

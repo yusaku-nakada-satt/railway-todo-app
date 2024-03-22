@@ -4,10 +4,10 @@
         {
             "label": "react start",
             "type": "shell",
-            "command": "yarn start",
+            "command": "yarn dev",
             "group": "build",
             "options": {
-              "cwd": "${workspaceFolder}"
+                "cwd": "${workspaceFolder}"
             },
         }
     ]
