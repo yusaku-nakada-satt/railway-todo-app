@@ -16,16 +16,28 @@
     "source.fixAll.eslint": "explicit"
     }
   },
-    "[typescriptreact, typescript]": {
+  "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.codeActionsOnSave": { //ESLintに対応しているファイルはESLintでフォーマット
-    "source.fixAll.eslint": "explicit"
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
     }
   },
-  "[javascriptreact, javascript]": {
+  "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.codeActionsOnSave": { //ESLintに対応しているファイルはESLintでフォーマット
-    "source.fixAll.eslint": "explicit"
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
+    }
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
+    }
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
     }
   },
   "[scss]": {

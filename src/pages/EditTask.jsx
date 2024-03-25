@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Header } from '../components/Header'
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import dayjs from 'dayjs';
+import DateTimePickerComponent from '../components/DateTimePicker'
+import useDateTimeFormat from '../hooks/useDateTimeFormat'
+import dayjs from 'dayjs'
 import axios from 'axios'
 import { useCookies } from 'react-cookie'
 import { url } from '../const'
@@ -23,8 +21,9 @@ export const EditTask = () => {
 	const handleTitleChange = (e) => setTitle(e.target.value)
 	const handleDetailChange = (e) => setDetail(e.target.value)
 	const handleLimitChange = (day) => {
-    const formattedLimit = dayjs(day).format('YYYY-MM-DDTHH:mm:ss') + 'Z';
-    setLimit(formattedLimit);};
+		const formattedLimit = dayjs(day).format('YYYY-MM-DDTHH:mm:ss') + 'Z'
+		setLimit(formattedLimit)
+	}
 	const handleIsDoneChange = (e) => setIsDone(e.target.value === 'done')
 	const onUpdateTask = () => {
 		console.log(isDone)
@@ -32,7 +31,7 @@ export const EditTask = () => {
 			title: title,
 			detail: detail,
 			done: isDone,
-			limit: limit
+			limit: limit,
 		}
 
 		axios
@@ -97,15 +96,7 @@ export const EditTask = () => {
 					<br />
 					<label>期限</label>
 					<br />
-					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<DemoContainer components={['DateTimePicker']} className="new-list-date-picker">
-							<DateTimePicker
-								label={limit || "期限が設定されていません"}
-								onChange={handleLimitChange}
-								defaultDate={limit}
-							/>
-						</DemoContainer>
-					</LocalizationProvider>
+					<DateTimePickerComponent handleLimitChange={handleLimitChange} limit={useDateTimeFormat(limit)} />
 					<label>詳細</label>
 					<br />
 					<textarea type='text' onChange={handleDetailChange} className='edit-task-detail' value={detail} />
