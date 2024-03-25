@@ -1,9 +1,5 @@
-import { useState, useEffect } from 'react'
-
-const useDateTimeFormat = (isoDateTime) => {
-	const [formattedDateTime, setFormattedDateTime] = useState('')
-
-	useEffect(() => {
+const useDateTimeFormat = () => {
+	const formatDateTime = (isoDateTime) => {
 		const date = new Date(isoDateTime)
 		const year = date.getFullYear()
 		const month = date.getMonth() + 1
@@ -11,11 +7,10 @@ const useDateTimeFormat = (isoDateTime) => {
 		const hours = date.getHours()
 		const minutes = date.getMinutes()
 
-		const formatted = `${year}年${month}月${day}日 ${hours}時${minutes}分`
-		setFormattedDateTime(formatted)
-	}, [isoDateTime])
+		return `${year}年${month}月${day}日 ${hours}時${minutes}分`
+	}
 
-	return formattedDateTime
+	return { formatDateTime }
 }
 
 export default useDateTimeFormat

@@ -11,6 +11,7 @@ import './editTask.scss'
 
 export const EditTask = () => {
 	const history = useNavigate()
+	const { formatDateTime } = useDateTimeFormat()
 	const { listId, taskId } = useParams()
 	const [cookies] = useCookies()
 	const [title, setTitle] = useState('')
@@ -96,7 +97,7 @@ export const EditTask = () => {
 					<br />
 					<label>期限</label>
 					<br />
-					<DateTimePickerComponent handleLimitChange={handleLimitChange} limit={useDateTimeFormat(limit)} />
+					<DateTimePickerComponent handleLimitChange={handleLimitChange} limit={formatDateTime(limit)} />
 					<label>詳細</label>
 					<br />
 					<textarea type='text' onChange={handleDetailChange} className='edit-task-detail' value={detail} />

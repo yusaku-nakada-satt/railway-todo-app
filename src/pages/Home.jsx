@@ -14,7 +14,19 @@ export const Home = () => {
 	const [selectListId, setSelectListId] = useState()
 	const [tasks, setTasks] = useState([])
 	const [errorMessage, setErrorMessage] = useState('')
+	const { formatDateTime } = useDateTimeFormat()
+	const { getRemainingTime } = useRemainingTime()
 	const [cookies] = useCookies()
+	const formatTask = (task) => {
+		const formattedLimit = task.limit ? formatDateTime(task.limit) : null
+		const remainingTime = task.limit ? getRemainingTime(task.limit) : null
+		return {
+			...task,
+			formattedLimit: formattedLimit,
+			remainingTime: remainingTime,
+		}
+	}
+
 	const handleIsDoneDisplayChange = (e) => setIsDoneDisplay(e.target.value)
 	useEffect(() => {
 		axios
@@ -48,7 +60,11 @@ export const Home = () => {
 						if (a.limit > b.limit) return 1
 						return 0
 					})
-					setTasks(sortedTasks)
+					return sortedTasks
+				})
+				.then((sortedTasks) => {
+					const updatedTasks = sortedTasks.map(formatTask)
+					setTasks(updatedTasks)
 				})
 				.catch((err) => {
 					setErrorMessage(`タスクの取得に失敗しました。${err}`)
@@ -65,12 +81,23 @@ export const Home = () => {
 				},
 			})
 			.then((res) => {
-				setTasks(res.data.tasks)
+				// タスクの期限を昇順でソート
+				const sortedTasks = res.data.tasks.sort((a, b) => {
+					if (a.limit < b.limit) return -1
+					if (a.limit > b.limit) return 1
+					return 0
+				})
+				return sortedTasks
+			})
+			.then((sortedTasks) => {
+				const updatedTasks = sortedTasks.map(formatTask)
+				setTasks(updatedTasks)
 			})
 			.catch((err) => {
 				setErrorMessage(`タスクの取得に失敗しました。${err}`)
 			})
 	}
+
 	return (
 		<div>
 			<Header />
@@ -159,9 +186,9 @@ const Tasks = (props) => {
 							<br />
 							{task.limit ? (
 								<>
-									{`期限：${useDateTimeFormat(task.limit)}`}
+									{`期限：${task.formattedLimit}`}
 									<br />
-									{`残り時間：${useRemainingTime(task.limit)}`}
+									{`残り時間：${task.remainingTime}`}
 								</>
 							) : (
 								'期限が設定されていません'
