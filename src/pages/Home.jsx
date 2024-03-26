@@ -17,6 +17,7 @@ export const Home = () => {
 	const { formatDateTime } = useDateTimeFormat()
 	const { getRemainingTime } = useRemainingTime()
 	const [cookies] = useCookies()
+
 	const formatTask = (task) => {
 		const formattedLimit = task.limit ? formatDateTime(task.limit) : null
 		const remainingTime = task.limit ? getRemainingTime(task.limit) : null
@@ -115,11 +116,12 @@ export const Home = () => {
 							</p>
 						</div>
 					</div>
-					<ul className='list-tab'>
+					<ul className='list-tab' role='list'>
 						{lists.map((list, key) => {
 							const isActive = list.id === selectListId
 							return (
 								<li
+									tabIndex={0}
 									key={key}
 									className={`list-tab-item ${isActive ? 'active' : ''}`}
 									onClick={() => handleSelectList(list.id)}

@@ -30,6 +30,10 @@
 			border: solid 1px #242f9b;
 			justify-content: center;
 			align-items: center;
+			&:focus {
+				outline: 5px auto black;
+				outline-offset: -0.15em;
+			}
 		}
 
 		.active {
